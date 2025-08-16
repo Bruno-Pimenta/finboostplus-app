@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.3">
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\config\AuthorizationServerConfig.java">
+<error line="73" severity="error" message="A linha contém mais do que 120 caracteres (foram encontrados 153)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+<error line="79" severity="error" message="A linha contém mais do que 120 caracteres (foram encontrados 172)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\config\customgrant\CustomPasswordAuthenticationConverter.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\config\customgrant\CustomPasswordAuthenticationProvider.java">
+<error line="47" severity="error" message="A linha contém mais do que 120 caracteres (foram encontrados 121)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+<error line="62" severity="error" message="A linha contém mais do que 120 caracteres (foram encontrados 129)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+<error line="63" severity="error" message="A linha contém mais do que 120 caracteres (foram encontrados 138)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+<error line="85" severity="error" message="A linha contém mais do que 120 caracteres (foram encontrados 163)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+<error line="122" severity="error" message="A linha contém mais do que 120 caracteres (foram encontrados 134)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+<error line="138" severity="error" message="A linha contém mais do que 120 caracteres (foram encontrados 128)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\config\customgrant\CustomPasswordAuthenticationToken.java">
+<error line="21" severity="error" message="A linha contém mais do que 120 caracteres (foram encontrados 128)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\config\customgrant\CustomUserAuthorities.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\config\ResourceServerConfig.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\controller\UserController.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\DemoApplication.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\DTO\UserRequestDTO.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\exception\DatabaseException.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\exception\EmailAlreadyRegisteredException.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\exception\error\CustomError.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\exception\error\FieldMessage.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\exception\error\ValidationError.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\exception\handler\ControllerExceptionHandler.java">
+<error line="37" severity="error" message="A linha contém mais do que 120 caracteres (foram encontrados 123)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\exception\ResourceNotFoundException.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\model\Role.java">
+<error line="31" column="9" severity="error" message="A estrutura &apos;if&apos; deve utilizar &apos;{}&apos;s." source="com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck"/>
+<error line="33" column="9" severity="error" message="A estrutura &apos;if&apos; deve utilizar &apos;{}&apos;s." source="com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck"/>
+<error line="35" column="9" severity="error" message="A estrutura &apos;if&apos; deve utilizar &apos;{}&apos;s." source="com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck"/>
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\model\User.java">
+<error line="78" column="17" severity="error" message="A estrutura &apos;if&apos; deve utilizar &apos;{}&apos;s." source="com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck"/>
+<error line="79" column="17" severity="error" message="A estrutura &apos;if&apos; deve utilizar &apos;{}&apos;s." source="com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck"/>
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\projection\UserDetailsProjection.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\repository\RoleRepository.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\repository\UserRepository.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\java\com\finboostplus\service\UserService.java">
+</file>
+<file name="C:\Users\Bruno\Documents\Codifica - MaisPraTi - Projeto\finboostplus-app\backend\finboostplus_teste\src\main\resources\application.properties">
+</file>
+</checkstyle>
