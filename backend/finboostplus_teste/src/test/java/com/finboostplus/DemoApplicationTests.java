@@ -10,4 +10,8 @@ class DemoApplicationTests {
 	void contextLoads() {
 	}
 
+    @Test
+    public void testeINsercao(){
+        System.out.println("Imprimir console");
+    }
 }
