@@ -50,6 +50,10 @@ public class User implements UserDetails {
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
+//
+//    @OneToMany(mappedBy = "user", cascade =  CascadeType.ALL,orphanRemoval = true)
+//    private Set<MemberGroup> memberGroups = new HashSet<>();
+
 	public User(String name, String email, String password, String colorTheme) {
 		this.name = name;
 		this.email = email;
@@ -58,7 +62,15 @@ public class User implements UserDetails {
 		this.createdAt = Instant.now();
 	}
 
-	public static User dtoToUser(UserRequestDTO dto){
+//    public Set<MemberGroup> getMemberGroups() {
+//        return memberGroups;
+//    }
+//
+//    public void setMemberGroups(HashSet<MemberGroup> memberGroups) {
+//        this.memberGroups = memberGroups;
+//    }
+
+    public static User dtoToUser(UserRequestDTO dto){
 		return new User(dto.name(), dto.email(), dto.password(), dto.colorTheme());
 	}
 
