@@ -1,11 +1,7 @@
 package com.finboostplus;
 
-import com.finboostplus.model.Group;
-import com.finboostplus.model.MemberGroup;
-import com.finboostplus.model.MemberGroupId;
-import com.finboostplus.model.User;
 import com.finboostplus.repository.GroupRepository;
-import com.finboostplus.repository.MemberGroupRepository;
+import com.finboostplus.repository.GroupMemberRepository;
 import com.finboostplus.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,20 +9,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import java.util.Optional;
-
 @SpringBootApplication
 @EnableJpaAuditing
-public class DemoApplication implements CommandLineRunner {
+public class FinboostplusApplication implements CommandLineRunner {
 
     @Autowired
     UserRepository userRepository;
     @Autowired
     GroupRepository groupRepository;
     @Autowired
-    MemberGroupRepository memberGroupRepository;
+    GroupMemberRepository groupMemberRepository;
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(FinboostplusApplication.class, args);
 	}
 
     @Override
@@ -48,6 +42,13 @@ public class DemoApplication implements CommandLineRunner {
 //        memberGroupRepository.save(members);
 
 
+        /**
+         * Exemplo de retorno  de uma lista  usuários de um grupo especifico
+         */
+
+      /*  SELECT u.user_name, u.e_mail FROM users u
+        INNER JOIN member_group mb ON mb.user_id= u.id
+        INNER JOIN tb_group tb_g ON mb.id_group=3*/
 
 
     }

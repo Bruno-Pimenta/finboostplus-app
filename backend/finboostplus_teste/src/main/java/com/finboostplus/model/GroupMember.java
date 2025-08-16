@@ -14,10 +14,10 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class MemberGroup {
+public class GroupMember {
 
     @EmbeddedId
-    private MemberGroupId id = new MemberGroupId();
+    private GroupMemberId id = new GroupMemberId();
 
     @ManyToOne
     @MapsId("userId")
@@ -36,11 +36,11 @@ public class MemberGroup {
     @CreatedDate
     private LocalDateTime entryDate;
 
-    public MemberGroupId getId() {
+    public GroupMemberId getId() {
         return id;
     }
 
-    public void setId(MemberGroupId id) {
+    public void setId(GroupMemberId id) {
         this.id = id;
     }
 
@@ -79,7 +79,7 @@ public class MemberGroup {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        MemberGroup that = (MemberGroup) o;
+        GroupMember that = (GroupMember) o;
         return Objects.equals(user, that.user) && Objects.equals(group, that.group);
     }
 
