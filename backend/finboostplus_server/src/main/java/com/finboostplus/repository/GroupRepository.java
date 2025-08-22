@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface GroupRepository extends JpaRepository<Group,Long> {
-
-
+public interface GroupRepository extends JpaRepository<Group, Long> {
 
     @Query(nativeQuery = true, value = """
             SELECT tb_g.id ,tb_g.created_at,tb_g.description, tb_g.name, tb_g.group_creator_id
@@ -25,9 +23,6 @@ public interface GroupRepository extends JpaRepository<Group,Long> {
             """)
     Page<Group> listaGrupoUsuarioPage(Long creatorId, Pageable pageable);
 
-
-//    Group listGroupDetails(Long idGroup);
-//    Group findByName(String name);
+    // Group listGroupDetails(Long idGroup);
+    // Group findByName(String name);
 }
-
-
