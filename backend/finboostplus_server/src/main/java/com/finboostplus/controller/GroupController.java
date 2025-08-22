@@ -1,6 +1,7 @@
 package com.finboostplus.controller;
 
 import com.finboostplus.DTO.GroupDto;
+import com.finboostplus.DTO.GroupUpdateDTO;
 import com.finboostplus.model.Group;
 import com.finboostplus.model.User;
 import com.finboostplus.repository.GroupRepository;
@@ -12,9 +13,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Optional;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/groups")
+
 public class GroupController {
 
     @Autowired
@@ -27,34 +32,32 @@ public class GroupController {
     GroupRepository groupRepository;
 
     @PostMapping()
-public ResponseEntity<Object>createNewGroup(@RequestBody GroupDto dto){
+    public ResponseEntity<Object> createNewGroup(@RequestBody GroupDto dto) {
 
+        String userName = userService.authenticated();
 
-            String userName = userService.authenticated();
+        User user = userService.getUser(userName);
 
-            User user = userService.getUser(userName);
+        if (user == null) {
 
-            if(user==null){
+            return ResponseEntity.badRequest().body("Usuário Não Encontrado ");
 
-                return  ResponseEntity.badRequest().body("Usuário Não Encontrado ");
-
-            }else{
-                Group newGroup = groupService.createNewGroup(dto,user);
-                if(newGroup != null){
-                    return  ResponseEntity.status(201).body(newGroup);
-                }
+        } else {
+            Group newGroup = groupService.createNewGroup(dto, user);
+            if (newGroup != null) {
+                return ResponseEntity.status(201).body(newGroup);
             }
+        }
 
-        return  ResponseEntity.badRequest().body("Não foi possível a criação do Grupo, ");
- }
-
+        return ResponseEntity.badRequest().body("Não foi possível a criação do Grupo, ");
+    }
 
     @GetMapping()
     public ResponseEntity<Page<Group>> listGroupsPage(
-                                                  @RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "10")int size) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        User  user = getUser();
+        User user = getUser();
         System.out.println(user.toString());
 
         Page<Group> groups = groupService.listCreatorGroupPage(user.getId(), pageable);
@@ -62,10 +65,19 @@ public ResponseEntity<Object>createNewGroup(@RequestBody GroupDto dto){
         return ResponseEntity.ok(groups);
     }
 
-    private User getUser(){
+    private User getUser() {
         String userName = userService.authenticated();
         User user = userService.getUser(userName);
         System.out.println("DENTRO DO GETUSER" + user.toString());
-        return  user;
+        return user;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Group> updateGroup(@PathVariable Long id, @RequestBody GroupUpdateDTO groupUpdateDTO) {
+        Optional<Group> group = groupService.updateGroup(id, groupUpdateDTO);
+        if (group.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(group.get(), HttpStatus.OK);
     }
 }

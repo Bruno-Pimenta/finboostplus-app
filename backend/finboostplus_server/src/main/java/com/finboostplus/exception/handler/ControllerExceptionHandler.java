@@ -6,6 +6,7 @@ import com.finboostplus.exception.ResourceNotFoundException;
 import com.finboostplus.exception.UserNotFoundException;
 import com.finboostplus.exception.error.CustomError;
 import com.finboostplus.exception.error.ValidationError;
+import com.finboostplus.exception.ForbiddenResourceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -19,40 +20,48 @@ import java.time.Instant;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException e){
+    public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException e) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         CustomError error = new CustomError(Instant.now(), "Not Found", status.value(), e.getMessage());
         return ResponseEntity.status(status).body(error);
     }
 
     @ExceptionHandler(DatabaseException.class)
-    public ResponseEntity<?> databaseException(DatabaseException e){
+    public ResponseEntity<?> databaseException(DatabaseException e) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         CustomError error = new CustomError(Instant.now(), "Internal Server Error", status.value(), e.getMessage());
         return ResponseEntity.status(status).body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e){
+    public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
-        ValidationError error = new ValidationError(Instant.now(), "Erro de validação", status.value(), "Dados inválidos");
-        for(FieldError f : e.getBindingResult().getFieldErrors()){
+        ValidationError error = new ValidationError(Instant.now(), "Erro de validação", status.value(),
+                "Dados inválidos");
+        for (FieldError f : e.getBindingResult().getFieldErrors()) {
             error.addError(f.getField(), f.getDefaultMessage());
         }
         return ResponseEntity.status(status).body(error);
     }
 
     @ExceptionHandler(EmailAlreadyRegisteredException.class)
-    public ResponseEntity<?> emailAlreadyRegisteredException(EmailAlreadyRegisteredException e){
+    public ResponseEntity<?> emailAlreadyRegisteredException(EmailAlreadyRegisteredException e) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         CustomError error = new CustomError(Instant.now(), "Internal Server Error", status.value(), e.getMessage());
         return ResponseEntity.status(status).body(error);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?> userNotFoundException(UserNotFoundException e){
+    public ResponseEntity<?> userNotFoundException(UserNotFoundException e) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         CustomError error = new CustomError(Instant.now(), "User Not Found", status.value(), e.getMessage());
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(ForbiddenResourceException.class)
+    public ResponseEntity<?> forbiddenResourceException(ForbiddenResourceException e) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError error = new CustomError(Instant.now(), "Resource Not Allowed", status.value(), e.getMessage());
         return ResponseEntity.status(status).body(error);
     }
 }
