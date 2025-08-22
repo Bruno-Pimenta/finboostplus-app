@@ -8,18 +8,17 @@ import com.finboostplus.model.GroupMemberId;
 import com.finboostplus.model.User;
 import com.finboostplus.repository.GroupMemberRepository;
 import com.finboostplus.repository.GroupRepository;
+import com.finboostplus.repository.UserRepository;
+import com.finboostplus.exception.ForbiddenResourceException;
+import com.finboostplus.exception.UserNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import com.finboostplus.service.UserService;
-import com.finboostplus.repository.UserRepository;
-import com.finboostplus.exception.ForbiddenResourceException;
-import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
-import com.finboostplus.exception.UserNotFoundException;
+
+import java.util.Optional;
 
 @Service
 public class GroupService {
