@@ -3,12 +3,12 @@ package com.finboostplus.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +17,7 @@ import java.util.Set;
 @SequenceGenerator(name = "seq_group",sequenceName = "seq_group",allocationSize = 1,initialValue = 1)
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
 public class Group {
 
@@ -30,7 +31,7 @@ public class Group {
 
     @Column(name = "created_at")
     @CreatedDate
-    private LocalDateTime createdAt ;
+    private Instant createdAt ;
 
     @Column(name = "group_creator_id")
     private Long GroupCreatorId;
@@ -38,29 +39,6 @@ public class Group {
 //   @OneToMany(mappedBy = "group" , cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<MemberGroup> memberGroups = new HashSet<>();
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 
 //    public Set<MemberGroup> getMemberGroups() {
 //        return memberGroups;
@@ -72,27 +50,5 @@ public class Group {
 
     @OneToMany(mappedBy = "group",cascade = CascadeType.ALL,orphanRemoval = true)
     public Set<Expense> expenses;
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getGroupCreatorId() {
-        return GroupCreatorId;
-    }
-
-    public void setGroupCreatorId(Long groupCreatorId) {
-        GroupCreatorId = groupCreatorId;
-    }
-
-    public Set<Expense> getExpenses() {
-        return expenses;
-    }
-
-    public void setExpenses(Set<Expense> expenses) {
-        this.expenses = expenses;
-    }
 }

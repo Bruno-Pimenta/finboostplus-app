@@ -2,17 +2,20 @@ package com.finboostplus.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "member_group")
+@Table(name = "group_member")
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
 public class GroupMember {
 
@@ -26,7 +29,7 @@ public class GroupMember {
 
     @ManyToOne
     @MapsId("groupId")
-    @JoinColumn(name = "id_group")
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @Column(name = "auth_level")
@@ -34,47 +37,8 @@ public class GroupMember {
 
     @Column(name = "entry_date")
     @CreatedDate
-    private LocalDateTime entryDate;
+    private Instant entryDate;
 
-    public GroupMemberId getId() {
-        return id;
-    }
-
-    public void setId(GroupMemberId id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    public String getAuthorization() {
-        return authorization;
-    }
-
-    public void setAuthorization(String authorization) {
-        this.authorization = authorization;
-    }
-
-    public LocalDateTime getEntryDate() {
-        return entryDate;
-    }
-
-    public void setEntryDate(LocalDateTime entryDate) {
-        this.entryDate = entryDate;
-    }
 
     @Override
     public boolean equals(Object o) {

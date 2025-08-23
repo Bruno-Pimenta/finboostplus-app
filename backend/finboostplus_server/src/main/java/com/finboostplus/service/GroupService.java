@@ -1,5 +1,6 @@
 package com.finboostplus.service;
 
+import com.finboostplus.DTO.GroupCreateDTO;
 import com.finboostplus.DTO.GroupDto;
 import com.finboostplus.DTO.GroupUpdateDTO;
 import com.finboostplus.model.Group;
@@ -15,6 +16,7 @@ import com.finboostplus.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,40 +32,23 @@ public class GroupService {
     GroupMemberRepository groupMemberRepository;
 
     @Autowired
+    MemberGroupService memberGroupService;
+
+    @Autowired
     UserRepository userRepository;
 
     @Autowired
     UserService userService;
 
-    public Group createNewGroup(GroupDto groupDto, User user) {
-
-        GroupMember groupMember = new GroupMember();
-        Group group = groupDto.groupDtoToGroup();
-        group.setGroupCreatorId(user.getId());
+    public boolean createNewGroup(GroupCreateDTO groupDto){
+        User user = userRepository
+                .findByEmailIgnoreCase(userService.authenticated())
+                .orElseThrow(()-> new UsernameNotFoundException("Usuário não encontrado!"));
+        Group group = groupDto.groupDtoToGroup(user.getId());
         group = groupRepository.save(group);
-
-        if (group != null) {
-
-            GroupMemberId groupMemberId = new GroupMemberId(group.getId(), user.getId());
-
-            groupMember.setId(groupMemberId);
-            groupMember.setGroup(group);
-            groupMember.setUser(user);
-            groupMember.setAuthorization("ONWER");
-
-            groupMemberRepository.save(groupMember);
-
-            return group;
-        }
-
-        return null;
-
+        return memberGroupService.addOwnerGroup(user, group);
     }
 
-    public boolean addMemberGroup(Long id, String email) {
-
-        return false;
-    }
 
     @Transactional
     public Optional<Group> updateGroup(Long id, GroupUpdateDTO groupDto) {

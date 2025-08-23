@@ -1,12 +1,8 @@
 package com.finboostplus.exception.handler;
 
-import com.finboostplus.exception.DatabaseException;
-import com.finboostplus.exception.EmailAlreadyRegisteredException;
-import com.finboostplus.exception.ResourceNotFoundException;
-import com.finboostplus.exception.UserNotFoundException;
+import com.finboostplus.exception.*;
 import com.finboostplus.exception.error.CustomError;
 import com.finboostplus.exception.error.ValidationError;
-import com.finboostplus.exception.ForbiddenResourceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -45,8 +41,8 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(EmailAlreadyRegisteredException.class)
-    public ResponseEntity<?> emailAlreadyRegisteredException(EmailAlreadyRegisteredException e) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+    public ResponseEntity<?> emailAlreadyRegisteredException(EmailAlreadyRegisteredException e){
+        HttpStatus status = HttpStatus.CONFLICT;
         CustomError error = new CustomError(Instant.now(), "Internal Server Error", status.value(), e.getMessage());
         return ResponseEntity.status(status).body(error);
     }
@@ -59,9 +55,16 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(ForbiddenResourceException.class)
-    public ResponseEntity<?> forbiddenResourceException(ForbiddenResourceException e) {
+    public ResponseEntity<?> forbiddenResourceException(ForbiddenResourceException e){
         HttpStatus status = HttpStatus.FORBIDDEN;
         CustomError error = new CustomError(Instant.now(), "Resource Not Allowed", status.value(), e.getMessage());
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(UserAlreadyRegisteredOnGroupException.class)
+    public ResponseEntity<?> userAlreadyRegisteredOnGroupException(UserAlreadyRegisteredOnGroupException e){
+        HttpStatus status = HttpStatus.CONFLICT;
+        CustomError error = new CustomError(Instant.now(), "Internal Server Error", status.value(), e.getMessage());
         return ResponseEntity.status(status).body(error);
     }
 }
