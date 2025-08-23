@@ -16,8 +16,8 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
                           FROM group_member gm
                           INNER JOIN tb_group tb_g ON gm.group_id = tb_g.id
                           INNER JOIN users ON gm.user_id = users.id
-                          where users.id =:creatorId
-            """)
+                          where users.id =:creatorId 
+            """) // Remove creatorId later
     Page<Group> listaGrupoUsuarioPage(Long creatorId, Pageable pageable);
 
     // Group listGroupDetails(Long idGroup);
