@@ -16,14 +16,22 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
      * INNER JOIN tb_group g ON members.id_group = 2
      */
     @Query(nativeQuery = true, value = """
-                SELECT count(*) from group_member as mg
+                SELECT count(*) from group_member as gm
                 inner join users as u
-                on mg.user_id = u.id
+                on gm.user_id = u.id
                 inner join tb_group as g
-                on g.id = mg.id_group where u.id = :userId and g.id = :groupId
-                and mg.auth_level = 'OWNER'
+                on g.id = gm.group_id where u.id = :userId and g.id = :groupId
+                and gm.auth_level = 'OWNER'
             """)
     Integer isUserAndGroupAndAuthorityValidToUpdateGroup(long userId, long groupId);
+
+    @Query(nativeQuery = true, value = """
+			   SELECT count(*)
+			   FROM group_member AS gm
+			   WHERE gm.user_id = :userId
+			   AND gm.group_id = :groupId;
+			""")
+    Integer isUserMemberGroup(long userId, long groupId);
 
     List<GroupMember> findByUser_id(Long userId);
 

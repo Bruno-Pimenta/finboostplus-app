@@ -1,21 +1,23 @@
 package com.finboostplus.controller;
 
-import com.finboostplus.DTO.GroupDto;
 import com.finboostplus.DTO.GroupUpdateDTO;
 import com.finboostplus.model.Group;
 import com.finboostplus.model.User;
-import com.finboostplus.repository.GroupRepository;
 import com.finboostplus.service.GroupService;
+import com.finboostplus.service.MemberGroupService;
 import com.finboostplus.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
+import com.finboostplus.DTO.GroupCreateDTO;
+import com.finboostplus.DTO.GroupMemberDTO;
+
 
 @RestController
 @RequestMapping("/groups")
@@ -29,27 +31,21 @@ public class GroupController {
     UserService userService;
 
     @Autowired
-    GroupRepository groupRepository;
+    MemberGroupService memberGroupService;
 
-    @PostMapping()
-    public ResponseEntity<Object> createNewGroup(@RequestBody GroupDto dto) {
-
-        String userName = userService.authenticated();
-
-        User user = userService.getUser(userName);
-
-        if (user == null) {
-
-            return ResponseEntity.badRequest().body("Usuário Não Encontrado ");
-
-        } else {
-            Group newGroup = groupService.createNewGroup(dto, user);
-            if (newGroup != null) {
-                return ResponseEntity.status(201).body(newGroup);
-            }
+    @PostMapping
+    public ResponseEntity<String> createGroup(@Valid @RequestBody GroupCreateDTO dto){
+        boolean groupIsCreated = groupService.createNewGroup(dto);
+        if (groupIsCreated) {
+            return new ResponseEntity<>("Grupo criado com sucesso!", HttpStatus.CREATED);
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
-        return ResponseEntity.badRequest().body("Não foi possível a criação do Grupo, ");
+    @PostMapping("/{groupId}/users")
+    public ResponseEntity<String> addMemberGroup(@PathVariable Long groupId, @RequestBody GroupMemberDTO groupMemberDTO){
+        memberGroupService.addMemberGroup(groupId, groupMemberDTO);
+        return new ResponseEntity<>("Membro adicionado com sucesso!", HttpStatus.OK);
     }
 
     @GetMapping()

@@ -2,6 +2,7 @@ package com.finboostplus.model;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Objects;
@@ -9,6 +10,7 @@ import java.util.Objects;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class UserExpenseDivisionId {
 
     private Long userId;
@@ -25,21 +27,5 @@ public class UserExpenseDivisionId {
     @Override
     public int hashCode() {
         return Objects.hashCode(userId);
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getExpenseId() {
-        return expenseId;
-    }
-
-    public void setExpenseId(Long expenseId) {
-        this.expenseId = expenseId;
     }
 }
