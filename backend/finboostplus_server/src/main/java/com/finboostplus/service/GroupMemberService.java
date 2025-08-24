@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MemberGroupService {
+public class GroupMemberService {
 
     @Autowired
     UserRepository userRepository;
@@ -34,9 +34,9 @@ public class MemberGroupService {
     @Autowired
     UserService userService;
 
-    private final List<String> authorities = Arrays.asList("OWNER", "ADMIN");
+    private final List<String> AUTHORITIES = Arrays.asList("OWNER", "ADMIN");
 
-    public void addMemberGroup(Long groupId, GroupMemberDTO groupMemberDTO){
+    public void addGroupMember(Long groupId, GroupMemberDTO groupMemberDTO){
         Optional<User> userLoggedInOptional = userRepository.findByEmailIgnoreCase(userService.authenticated());
         var userLoggedIn = userLoggedInOptional.orElseThrow(() ->new UserNotFoundException("Usuário logado não encontrado"));
 
@@ -46,12 +46,12 @@ public class MemberGroupService {
         Optional<Group> groupOptional = groupRepository.findById(Long.parseLong(String.valueOf(groupId)));
         var group = groupOptional.orElseThrow(() ->new GroupNotFoundException("Grupo não encontrado"));
 
-        Integer isUserGroupMember = groupMemberRepository.isUserMemberGroup(userNewMember.getId(), groupId);
+        Integer isUserGroupMember = groupMemberRepository.isUserMemberOfGroup(userNewMember.getId(), groupId);
         if(isUserGroupMember>0){
             throw new UserAlreadyRegisteredOnGroupException("Usuário já é membro no grupo");
         }
 
-        if(userRepository.isUserAuthorityValidToGroup(userLoggedIn.getId(),groupId, this.authorities)>0
+        if(userRepository.isUserAuthorityValidToGroup(userLoggedIn.getId(),groupId, this.AUTHORITIES)>0
                 && (groupMemberDTO.authorization().equals("USER") || groupMemberDTO.authorization().equals("ADMIN"))){
             GroupMember member = new GroupMember();
             member.setUser(userNewMember);

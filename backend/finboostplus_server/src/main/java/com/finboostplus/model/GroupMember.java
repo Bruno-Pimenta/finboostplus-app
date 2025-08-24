@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "group_member")
+@Table(name = "group_members")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

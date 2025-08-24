@@ -12,13 +12,13 @@ import org.springframework.stereotype.Repository;
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
     @Query(nativeQuery = true, value = """
-            SELECT tb_g.id ,tb_g.created_at,tb_g.description, tb_g.name, tb_g.group_creator_id
-                          FROM group_member gm
-                          INNER JOIN tb_group tb_g ON gm.group_id = tb_g.id
+            SELECT g.id ,g.created_at,g.description, g.name
+                          FROM group_members gm
+                          INNER JOIN groups g ON gm.group_id = g.id
                           INNER JOIN users ON gm.user_id = users.id
-                          where users.id =:creatorId 
-            """) // Remove creatorId later
-    Page<Group> listaGrupoUsuarioPage(Long creatorId, Pageable pageable);
+                          where users.id =:memberId
+            """)
+    Page<Group> listaGrupoUsuarioPage(Long memberId, Pageable pageable);
 
     // Group listGroupDetails(Long idGroup);
     // Group findByName(String name);

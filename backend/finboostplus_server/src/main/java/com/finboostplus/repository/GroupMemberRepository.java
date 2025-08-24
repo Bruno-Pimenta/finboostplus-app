@@ -16,10 +16,10 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
      * INNER JOIN tb_group g ON members.id_group = 2
      */
     @Query(nativeQuery = true, value = """
-                SELECT count(*) from group_member as gm
+                SELECT count(*) from group_members as gm
                 inner join users as u
                 on gm.user_id = u.id
-                inner join tb_group as g
+                inner join groups as g
                 on g.id = gm.group_id where u.id = :userId and g.id = :groupId
                 and gm.auth_level = 'OWNER'
             """)
@@ -27,11 +27,11 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
 
     @Query(nativeQuery = true, value = """
 			   SELECT count(*)
-			   FROM group_member AS gm
+			   FROM group_members AS gm
 			   WHERE gm.user_id = :userId
 			   AND gm.group_id = :groupId;
 			""")
-    Integer isUserMemberGroup(long userId, long groupId);
+    Integer isUserMemberOfGroup(long userId, long groupId);
 
     List<GroupMember> findByUser_id(Long userId);
 

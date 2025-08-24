@@ -1,6 +1,5 @@
 package com.finboostplus.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,8 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tb_group")
-@SequenceGenerator(name = "seq_group",sequenceName = "seq_group",allocationSize = 1,initialValue = 1)
+@Table(name = "groups")
+@SequenceGenerator(name = "seq_group", sequenceName = "seq_group", allocationSize = 1, initialValue = 1)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -31,24 +30,21 @@ public class Group {
 
     @Column(name = "created_at")
     @CreatedDate
-    private Instant createdAt ;
+    private Instant createdAt;
 
-    @Column(name = "group_creator_id")
-    private Long GroupCreatorId;
+    // @OneToMany(mappedBy = "group" , cascade = CascadeType.ALL, orphanRemoval =
+    // true)
+    // private Set<MemberGroup> memberGroups = new HashSet<>();
 
-//   @OneToMany(mappedBy = "group" , cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<MemberGroup> memberGroups = new HashSet<>();
+    // public Set<MemberGroup> getMemberGroups() {
+    // return memberGroups;
+    // }
+    //
+    // public void setMemberGroups(HashSet<MemberGroup> memberGroups) {
+    // this.memberGroups = memberGroups;
+    // }
 
-
-//    public Set<MemberGroup> getMemberGroups() {
-//        return memberGroups;
-//    }
-//
-//    public void setMemberGroups(HashSet<MemberGroup> memberGroups) {
-//        this.memberGroups = memberGroups;
-//    }
-
-    @OneToMany(mappedBy = "group",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<Expense> expenses;
 
 }
