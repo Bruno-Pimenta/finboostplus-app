@@ -74,4 +74,9 @@ public class GroupMemberService {
         owner.setId(new GroupMemberId(user.getId(),group.getId()));
         return groupMemberRepository.save(owner) != null? true : false;
     }
+
+    boolean getUserOnwerAdmin(Long userId,Long groupId, List<String> authLevels){
+
+        return groupMemberRepository.isUserOnwerAdmin(userId,groupId,authLevels);
+    }
 }

@@ -3,6 +3,8 @@ package com.finboostplus.service;
 import com.finboostplus.DTO.GroupCreateDTO;
 import com.finboostplus.DTO.GroupDto;
 import com.finboostplus.DTO.GroupUpdateDTO;
+import com.finboostplus.exception.GroupNotFoundException;
+import com.finboostplus.exception.ResourceNotFoundException;
 import com.finboostplus.model.Group;
 import com.finboostplus.model.GroupMember;
 import com.finboostplus.model.GroupMemberId;
@@ -74,14 +76,21 @@ public class GroupService {
             throw new ForbiddenResourceException("Usuário sem permissão");
         }
     }
-    // public List<Group> listGroupCreator(Long userId, Pageable pageable){
-    //
-    // return groupRepository.listaGrupoUsuario(userId,pageable);
-    // }
 
-    public Page<Group> listCreatorGroupPage(Long userId, Pageable pageable) {
+    public Page<GroupDto> listCreatorGroupPageDTO(Long userId, Pageable pageable) {
+        Page<Group> groups = groupRepository.listaGrupoUsuarioPage(userId, pageable);
+        // Converte Group → GroupDTO mantendo a paginação
+        return groups.map(group -> new GroupDto(
+                group.getId(),
+                group.getName(),
+                group.getDescription()
+        ));
+    }
+    public Group getGroup(Long idGroup) {
+        Group group = groupRepository.findById(idGroup).
+                orElseThrow(()-> new GroupNotFoundException("Grupo não encontrado"));
 
-        return groupRepository.listaGrupoUsuarioPage(userId, pageable);
+        return group;
     }
 
 }

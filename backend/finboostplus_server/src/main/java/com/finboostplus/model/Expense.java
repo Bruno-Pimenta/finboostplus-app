@@ -1,12 +1,18 @@
 package com.finboostplus.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "expenses")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @SequenceGenerator(name = "seq_expense", sequenceName = "seq_expense", allocationSize = 1, initialValue = 1)
 public class Expense {
 

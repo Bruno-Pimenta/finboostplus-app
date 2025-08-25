@@ -7,6 +7,7 @@ public record GroupDto(Long id,String name, String description ) {
     public Group groupDtoToGroup(){
 
         Group group = new Group();
+        group.setId(id);
         group.setName(name);
         group.setDescription(description);
         return  group;
