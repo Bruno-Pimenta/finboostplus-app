@@ -32,7 +32,7 @@ public class GroupService {
     GroupMemberRepository groupMemberRepository;
 
     @Autowired
-    MemberGroupService memberGroupService;
+    GroupMemberService groupMemberService;
 
     @Autowired
     UserRepository userRepository;
@@ -46,7 +46,7 @@ public class GroupService {
                 .orElseThrow(()-> new UsernameNotFoundException("Usuário não encontrado!"));
         Group group = groupDto.groupDtoToGroup(user.getId());
         group = groupRepository.save(group);
-        return memberGroupService.addOwnerGroup(user, group);
+        return groupMemberService.addOwnerGroup(user, group);
     }
 
 

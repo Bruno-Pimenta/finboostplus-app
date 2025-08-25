@@ -81,8 +81,8 @@ public class UserService implements UserDetailsService {
         if (!dto.email().equals(user.getEmail())) {
             user.setEmail(dto.email());
         }
-        if (!dto.colorTheme().equals(user.getColorTheme()) && dto.colorTheme() != null) {
-            user.setColorTheme(dto.colorTheme());
+        if (!dto.themeColor().equals(user.getThemeColor()) && dto.themeColor() != null) {
+            user.setThemeColor(dto.themeColor());
         }
         User userUpdated = userRepository.save(user);
         return userUpdated.getId() != null;

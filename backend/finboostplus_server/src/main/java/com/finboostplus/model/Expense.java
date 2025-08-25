@@ -7,34 +7,30 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "expenses")
-@SequenceGenerator(
-        name = "seq_expense",
-        sequenceName = "seq_expense",
-        allocationSize = 1,
-        initialValue = 1)
+@SequenceGenerator(name = "seq_expense", sequenceName = "seq_expense", allocationSize = 1, initialValue = 1)
 public class Expense {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_expense")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_expense")
     private Long id;
 
     private Double value;
 
-    private String tile;
+    private String title;
 
-    private String  description;
+    private String description;
 
     @Column(name = "deadline_date")
     private LocalDateTime deadlineDate;
 
     @Column(name = "creat_at")
-    private LocalDateTime creatAt;
+    private LocalDateTime creatAt; // Talvez mudar para instant
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "id_group")
-    private  Group group;
+    @JoinColumn(name = "group_id")
+    private Group group;
 }

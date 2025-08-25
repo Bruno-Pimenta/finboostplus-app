@@ -4,7 +4,7 @@ import com.finboostplus.DTO.GroupUpdateDTO;
 import com.finboostplus.model.Group;
 import com.finboostplus.model.User;
 import com.finboostplus.service.GroupService;
-import com.finboostplus.service.MemberGroupService;
+import com.finboostplus.service.GroupMemberService;
 import com.finboostplus.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class GroupController {
     UserService userService;
 
     @Autowired
-    MemberGroupService memberGroupService;
+    GroupMemberService groupMemberService;
 
     @PostMapping
     public ResponseEntity<String> createGroup(@Valid @RequestBody GroupCreateDTO dto){
@@ -42,13 +42,13 @@ public class GroupController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/{groupId}/users")
-    public ResponseEntity<String> addMemberGroup(@PathVariable Long groupId, @RequestBody GroupMemberDTO groupMemberDTO){
-        memberGroupService.addMemberGroup(groupId, groupMemberDTO);
+    @PostMapping("/{groupId}/members")
+    public ResponseEntity<String> addGroupMember(@PathVariable Long groupId, @RequestBody GroupMemberDTO groupMemberDTO){
+        groupMemberService.addGroupMember(groupId, groupMemberDTO);
         return new ResponseEntity<>("Membro adicionado com sucesso!", HttpStatus.OK);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Page<Group>> listGroupsPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -58,7 +58,7 @@ public class GroupController {
 
         Page<Group> groups = groupService.listCreatorGroupPage(user.getId(), pageable);
 
-        return ResponseEntity.ok(groups);
+        return new ResponseEntity<>(groups, HttpStatus.OK);
     }
 
     private User getUser() {

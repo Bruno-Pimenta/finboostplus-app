@@ -18,5 +18,5 @@ public record UserCreateDTO(
 		@Size(max = 100, message = "A senha deve ter no máximo 100 caracteres")
 		String password,
 
-		String colorTheme
+		String themeColor
 ) {}

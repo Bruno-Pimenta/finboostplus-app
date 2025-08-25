@@ -24,10 +24,10 @@ public interface UserRepository extends JpaRepository<User, Long>  {
 	Optional<User> findByEmailIgnoreCase(String email);
 
 	@Query(nativeQuery = true, value = """
-				SELECT count(*) from member_group as mg
+				SELECT count(*) from group_members as mg
 				inner join users as u
 				on mg.user_id = u.id
-				inner join tb_group as g
+				inner join groups as g
 				on g.id = mg.group_id where u.id = :userId and g.id = :groupId
 				and mg.auth_level = 'OWNER'
 			""")
@@ -35,9 +35,9 @@ public interface UserRepository extends JpaRepository<User, Long>  {
 
 	@Query(nativeQuery = true, value = """
 			   SELECT count(*)
-			   FROM group_member AS gm
+			   FROM group_members AS gm
 			   INNER JOIN users AS u ON gm.user_id = u.id
-			   INNER JOIN tb_group AS g ON g.id = gm.group_id
+			   INNER JOIN groups AS g ON g.id = gm.group_id
 			   WHERE u.id = :userId
 			   AND g.id = :groupId
 			   AND gm.auth_level IN (:authorities);

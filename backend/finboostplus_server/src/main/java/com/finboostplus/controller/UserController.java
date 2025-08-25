@@ -3,7 +3,6 @@ package com.finboostplus.controller;
 import com.finboostplus.DTO.UserCreateDTO;
 import com.finboostplus.DTO.UserUpdateDTO;
 import com.finboostplus.config.TokenRevocationUtil;
-import com.finboostplus.config.AuthorizationServerConfig;
 import com.finboostplus.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +34,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public class UserController {
 
     @Autowired
-    UserService service;
+    UserService userService;
 
     @Autowired
     OAuth2AuthorizationService authorizationService;
@@ -63,10 +62,10 @@ public class UserController {
                     	"name": "João Silva",
                     	"email": "joao.silva@email.com",
                     	"password": "minhasenha123",
-                    	"colorTheme": "blue"
+                    	"themeColor": "blue"
                     }
                     """))) @Valid @RequestBody UserCreateDTO dto) {
-        boolean userIsSaved = service.saveUser(dto);
+        boolean userIsSaved = userService.saveUser(dto);
         if (userIsSaved) {
             return new ResponseEntity<>("Cadastro feito com sucesso!", HttpStatus.CREATED);
         }
@@ -149,7 +148,7 @@ public class UserController {
                             	"name": "João Silva Santos",
                             	"email": "joao.santos@novoemail.com",
                             	"password": "novasenha123",
-                            	"colorTheme": "green"
+                            	"themeColor": "green"
                             }
                             """),
                     @ExampleObject(name = "Atualização parcial - apenas nome", description = "Exemplo atualizando apenas o nome", value = """
@@ -164,11 +163,11 @@ public class UserController {
                             """),
                     @ExampleObject(name = "Atualização de tema", description = "Exemplo atualizando apenas o tema de cor", value = """
                             {
-                            	"colorTheme": "purple"
+                            	"themeColor": "purple"
                             }
                             """)
             })) @Valid @RequestBody UserUpdateDTO dto) {
-        boolean userIsSaved = service.updateUser(authenticated(), dto);
+        boolean userIsSaved = userService.updateUser(authenticated(), dto);
         if (userIsSaved) {
             TokenRevocationUtil.revokeCurrentUserTokens(authorizationService);
             return new ResponseEntity<>(HttpStatus.OK);

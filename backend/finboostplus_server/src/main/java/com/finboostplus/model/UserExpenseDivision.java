@@ -6,15 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user_expense_division")
+@Table(name = "user_expense_divisions")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class UserExpenseDivision {
 
-
     @EmbeddedId
-    private  UserExpenseDivisionId id;
+    private UserExpenseDivisionId id;
 
     @ManyToOne
     @MapsId("userId")
@@ -26,10 +25,10 @@ public class UserExpenseDivision {
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
-
     @Column(name = "partial_value")
     private double parcialValue;
 
+    @Column(name = "is_paid")
     private boolean isPaid;
 
 }
