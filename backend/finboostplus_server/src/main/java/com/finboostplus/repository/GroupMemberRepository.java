@@ -42,11 +42,10 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
 //                AND (gm.auth_level = 'OWNER' OR gm.auth_level = 'ADMIN');
 //            """)
 //    boolean isUserOnwerAdmin(Long userId,Long groupId,String authLevel);
-    @Query(nativeQuery = true, value = """
+    @Query( value = """
             SELECT COUNT(gm)>0 FROM GroupMember gm\s
                      WHERE gm.user.id = :userId\s
                      AND gm.group.id = :groupId\s
-                     AND gm.authorization IN :authLevels;
-           \s""")
+                     AND gm.authorization IN :authLevels""")
     boolean isUserOnwerAdmin(Long userId,Long groupId,List<String> authLevels);
 }

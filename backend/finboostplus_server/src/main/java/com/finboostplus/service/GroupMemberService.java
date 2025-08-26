@@ -69,7 +69,7 @@ public class GroupMemberService {
         GroupMember owner = new GroupMember();
         owner.setUser(user);
         owner.setGroup(group);
-        owner.setAuthorization("OWNER");
+        owner.setAuthorization(this.AUTHORITIES.get(0));
         owner.setEntryDate(Instant.now());
         owner.setId(new GroupMemberId(user.getId(),group.getId()));
         return groupMemberRepository.save(owner) != null? true : false;
