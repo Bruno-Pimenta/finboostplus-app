@@ -1,6 +1,7 @@
 package com.finboostplus.repository;
 
 import com.finboostplus.model.GroupMember;
+import com.finboostplus.DTO.GroupMemberResponseDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,12 +27,20 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
     Integer isUserAndGroupAndAuthorityValidToUpdateGroup(long userId, long groupId);
 
     @Query(nativeQuery = true, value = """
-			   SELECT count(*)
-			   FROM group_members AS gm
-			   WHERE gm.user_id = :userId
-			   AND gm.group_id = :groupId;
-			""")
+               SELECT count(*)
+               FROM group_members AS gm
+               WHERE gm.user_id = :userId
+               AND gm.group_id = :groupId;
+            """)
     Integer isUserMemberOfGroup(long userId, long groupId);
+
+    @Query(nativeQuery = true, value = """
+            SELECT u.user_name FROM users u
+            inner join group_members gm
+            on gm.user_id = u.id
+            WHERE gm.group_id = :groupId
+            """)
+    List<GroupMemberResponseDTO> findMembersByGroupId(long groupId);
 
     List<GroupMember> findByUser_id(Long userId);
 

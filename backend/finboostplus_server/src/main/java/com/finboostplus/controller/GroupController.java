@@ -1,6 +1,7 @@
 package com.finboostplus.controller;
 
 import com.finboostplus.DTO.GroupUpdateDTO;
+import com.finboostplus.DTO.GroupMemberResponseDTO;
 import com.finboostplus.model.Group;
 import com.finboostplus.model.User;
 import com.finboostplus.service.GroupService;
@@ -13,11 +14,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import com.finboostplus.DTO.GroupCreateDTO;
 import com.finboostplus.DTO.GroupMemberDTO;
-
+import com.finboostplus.DTO.GroupMemberResponseDTO;
 
 @RestController
 @RequestMapping("/groups")
@@ -34,7 +37,7 @@ public class GroupController {
     GroupMemberService groupMemberService;
 
     @PostMapping
-    public ResponseEntity<String> createGroup(@Valid @RequestBody GroupCreateDTO dto){
+    public ResponseEntity<String> createGroup(@Valid @RequestBody GroupCreateDTO dto) {
         boolean groupIsCreated = groupService.createNewGroup(dto);
         if (groupIsCreated) {
             return new ResponseEntity<>("Grupo criado com sucesso!", HttpStatus.CREATED);
@@ -43,7 +46,8 @@ public class GroupController {
     }
 
     @PostMapping("/{groupId}/members")
-    public ResponseEntity<String> addGroupMember(@PathVariable Long groupId, @RequestBody GroupMemberDTO groupMemberDTO){
+    public ResponseEntity<String> addGroupMember(@PathVariable Long groupId,
+            @RequestBody GroupMemberDTO groupMemberDTO) {
         groupMemberService.addGroupMember(groupId, groupMemberDTO);
         return new ResponseEntity<>("Membro adicionado com sucesso!", HttpStatus.OK);
     }
@@ -75,5 +79,10 @@ public class GroupController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(group.get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{groupId}/members")
+    public ResponseEntity<List<GroupMemberResponseDTO>> findAllMembersByGroupId(@PathVariable long groupId) {
+        return new ResponseEntity<>(groupService.findAllMembersByGroupId(groupId), HttpStatus.OK);
     }
 }
