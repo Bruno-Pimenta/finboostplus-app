@@ -52,29 +52,29 @@ public class GroupController {
         return new ResponseEntity<>("Membro adicionado com sucesso!", HttpStatus.OK);
     }
 
-//    @GetMapping
-//    public ResponseEntity<Page<GroupProjection>> listGroupsPage(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        User user = getUser();
-//       // System.out.println(user.toString());
-//        Page<GroupProjection> groupsDTO = groupService.listaCreatorGroupPageProjection(user.getId(), pageable);
-//        return new ResponseEntity<>(groupsDTO, HttpStatus.OK);
-//    }
-
     @GetMapping
-    public ResponseEntity<Page<GroupDto>> listGroupsPageExp(
+    public ResponseEntity<Page<GroupProjection>> listGroupsPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         User user = getUser();
-        System.out.println(user.toString());
-
-        Page<GroupDto> groupsDTO = groupService.listCreatorGroupPageDTO(user.getId(), pageable);
-
+       // System.out.println(user.toString());
+        Page<GroupProjection> groupsDTO = groupService.listaCreatorGroupPageProjection(user.getId(), pageable);
         return new ResponseEntity<>(groupsDTO, HttpStatus.OK);
     }
+//
+//    @GetMapping
+//    public ResponseEntity<Page<GroupDto>> listGroupsPageExp(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        User user = getUser();
+//        System.out.println(user.toString());
+//
+//        Page<GroupDto> groupsDTO = groupService.listCreatorGroupPageDTO(user.getId(), pageable);
+//
+//        return new ResponseEntity<>(groupsDTO, HttpStatus.OK);
+//    }
 
     private User getUser() {
         String userName = userService.authenticated();
