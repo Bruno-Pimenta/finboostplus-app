@@ -4,6 +4,7 @@ import com.finboostplus.DTO.*;
 import com.finboostplus.model.Expense;
 import com.finboostplus.model.Group;
 import com.finboostplus.model.User;
+import com.finboostplus.projection.GroupProjection;
 import com.finboostplus.service.ExpenseService;
 import com.finboostplus.service.GroupService;
 import com.finboostplus.service.GroupMemberService;
@@ -51,8 +52,19 @@ public class GroupController {
         return new ResponseEntity<>("Membro adicionado com sucesso!", HttpStatus.OK);
     }
 
+//    @GetMapping
+//    public ResponseEntity<Page<GroupProjection>> listGroupsPage(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        User user = getUser();
+//       // System.out.println(user.toString());
+//        Page<GroupProjection> groupsDTO = groupService.listaCreatorGroupPageProjection(user.getId(), pageable);
+//        return new ResponseEntity<>(groupsDTO, HttpStatus.OK);
+//    }
+
     @GetMapping
-    public ResponseEntity<Page<GroupDto>> listGroupsPage(
+    public ResponseEntity<Page<GroupDto>> listGroupsPageExp(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);

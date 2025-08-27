@@ -1,14 +1,13 @@
 package com.finboostplus.service;
 
+import com.finboostplus.DTO.ExpenseDTO;
 import com.finboostplus.DTO.GroupCreateDTO;
 import com.finboostplus.DTO.GroupDto;
 import com.finboostplus.DTO.GroupUpdateDTO;
 import com.finboostplus.exception.GroupNotFoundException;
 import com.finboostplus.exception.ResourceNotFoundException;
-import com.finboostplus.model.Group;
-import com.finboostplus.model.GroupMember;
-import com.finboostplus.model.GroupMemberId;
-import com.finboostplus.model.User;
+import com.finboostplus.model.*;
+import com.finboostplus.projection.GroupProjection;
 import com.finboostplus.repository.GroupMemberRepository;
 import com.finboostplus.repository.GroupRepository;
 import com.finboostplus.repository.UserRepository;
@@ -22,7 +21,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupService {
@@ -77,14 +79,30 @@ public class GroupService {
         }
     }
 
+
+    @Transactional(readOnly = true)
     public Page<GroupDto> listCreatorGroupPageDTO(Long userId, Pageable pageable) {
         Page<Group> groups = groupRepository.listaGrupoUsuarioPage(userId, pageable);
-        // Converte Group → GroupDTO mantendo a paginação
-        return groups.map(group -> new GroupDto(
-                group.getId(),
-                group.getName(),
-                group.getDescription()
-        ));
+
+        return groups.map(group -> {
+                   Set<ExpenseDTO> expenseDtos = group.getExpenses().stream()
+                    .map(exp -> new ExpenseDTO(exp.getId(),exp.getTitle(),exp.getValue()))
+                    .collect(Collectors.toSet());
+
+            return new GroupDto(
+                    group.getId(),
+                    group.getName(),
+                    group.getDescription(),
+                     expenseDtos
+            );
+        });
+
+    }
+
+    public Page<GroupProjection>listaCreatorGroupPageProjection(Long userId, Pageable pageable){
+        Page<GroupProjection> groups = groupRepository.listaGroupUsuerProjetction(userId,pageable);
+
+        return groups;
     }
     public Group getGroup(Long idGroup) {
         Group group = groupRepository.findById(idGroup).
