@@ -1,13 +1,11 @@
 package com.finboostplus.service;
 
-import com.finboostplus.DTO.ExpenseDTO;
-import com.finboostplus.DTO.GroupCreateDTO;
-import com.finboostplus.DTO.GroupDto;
-import com.finboostplus.DTO.GroupUpdateDTO;
+import com.finboostplus.DTO.*;
 import com.finboostplus.exception.GroupNotFoundException;
-import com.finboostplus.exception.ResourceNotFoundException;
 import com.finboostplus.model.*;
+import com.finboostplus.projection.ExpenseProjection;
 import com.finboostplus.projection.GroupProjection;
+import com.finboostplus.repository.ExpenseRepository;
 import com.finboostplus.repository.GroupMemberRepository;
 import com.finboostplus.repository.GroupRepository;
 import com.finboostplus.repository.UserRepository;
@@ -43,6 +41,8 @@ public class GroupService {
 
     @Autowired
     UserService userService;
+    @Autowired
+    ExpenseRepository expenseRepository;
 
     public boolean createNewGroup(GroupCreateDTO groupDto){
         User user = userRepository
@@ -79,6 +79,21 @@ public class GroupService {
         }
     }
 
+    public GroupDetailsDTO getExpenseGroupById(Long groupId){
+
+        String userName = userService.authenticated();
+        User user = userService.getUser(userName);
+        Group  group = getGroup(groupId);
+        if( group != null){
+
+            List<ExpenseProjection> expenseList = expenseRepository.listExpensesGroupById(user.getId(),groupId);
+             GroupDetailsDTO dto= new GroupDetailsDTO(group.getId(), group.getName(), expenseList);
+            System.out.println(dto.toString());
+           return dto;
+
+        }
+        return null;
+    }
 
     @Transactional(readOnly = true)
     public Page<GroupDto> listCreatorGroupPageDTO(Long userId, Pageable pageable) {
@@ -86,7 +101,7 @@ public class GroupService {
 
         return groups.map(group -> {
                    Set<ExpenseDTO> expenseDtos = group.getExpenses().stream()
-                    .map(exp -> new ExpenseDTO(exp.getId(),exp.getTitle(),exp.getValue()))
+                    .map(exp -> new ExpenseDTO(exp.getId(),exp.getTitle(),exp.getDescription(),exp.getValue()))
                     .collect(Collectors.toSet());
 
             return new GroupDto(

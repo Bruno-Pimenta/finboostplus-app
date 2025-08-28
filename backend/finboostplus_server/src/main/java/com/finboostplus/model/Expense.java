@@ -1,5 +1,6 @@
 package com.finboostplus.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +39,7 @@ public class Expense {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
+
     private Group group;
 
 

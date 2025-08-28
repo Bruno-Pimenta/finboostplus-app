@@ -1,4 +1,6 @@
 package com.finboostplus.DTO;
 
-public record ExpenseDTO(Long id,String title,Double value) {
+import com.finboostplus.model.Category;
+
+public record ExpenseDTO(Long id, String title, String description, Double value) {
 }
