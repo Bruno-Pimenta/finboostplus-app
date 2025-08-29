@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
