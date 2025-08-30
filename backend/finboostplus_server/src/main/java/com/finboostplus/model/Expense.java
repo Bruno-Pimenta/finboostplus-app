@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,17 +22,17 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_expense")
     private Long id;
 
-    private Double value;
+    private BigDecimal value;
 
     private String title;
 
     private String description;
 
     @Column(name = "deadline_date")
-    private LocalDateTime deadlineDate;
+    private Instant deadlineDate;
 
     @Column(name = "creat_at")
-    private LocalDateTime creatAt; // Talvez mudar para instant
+    private Instant creatAt; // Talvez mudar para instant
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -39,7 +40,6 @@ public class Expense {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
-
     private Group group;
 
 
@@ -54,5 +54,15 @@ public class Expense {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public Expense(String title, String description, BigDecimal value, Category category, Group group, Instant deadlineDate) {
+        this.title = title;
+        this.description = description;
+        this.value = value;
+        this.category = category;
+        this.group = group;
+        this.deadlineDate = deadlineDate;
+        this.creatAt = Instant.now();
     }
 }

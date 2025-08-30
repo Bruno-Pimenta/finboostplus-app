@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "user_expense_divisions")
 @AllArgsConstructor
@@ -26,7 +28,7 @@ public class UserExpenseDivision {
     private Expense expense;
 
     @Column(name = "partial_value")
-    private double parcialValue;
+    private BigDecimal parcialValue;
 
     @Column(name = "is_paid")
     private boolean isPaid;
