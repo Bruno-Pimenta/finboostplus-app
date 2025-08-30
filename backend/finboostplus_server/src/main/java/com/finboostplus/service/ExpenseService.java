@@ -2,6 +2,7 @@ package com.finboostplus.service;
 
 import com.finboostplus.DTO.ExpenseCreateDTO;
 import com.finboostplus.DTO.ExpenseRequestDTO;
+import com.finboostplus.DTO.GroupExpenseDTO;
 import com.finboostplus.DTO.MembersExpenseDivisionCreateDTO;
 import com.finboostplus.exception.*;
 import com.finboostplus.model.*;
@@ -159,6 +160,18 @@ public class ExpenseService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return expenseValue.compareTo(total) == 0;
+    }
+
+    public List<GroupExpenseDTO> getAllGroupExpenses (Long groupId){
+        String userName = userService.authenticated();
+        User user = userRepository.findByEmailIgnoreCase(userName)
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+        if (!groupMemberRepository.isUserMemberOfGroup(user.getId(), groupId)) {
+            throw new ForbiddenResourceException("Acesso negado");
+        }
+
+        return expenseRepository.getAllGroupExpenses(user.getId(), groupId);
+
     }
 
 }

@@ -1,6 +1,7 @@
 package com.finboostplus.repository;
 
 import com.finboostplus.DTO.ExpenseDTO;
+import com.finboostplus.DTO.GroupExpenseDTO;
 import com.finboostplus.model.Expense;
 import com.finboostplus.model.Group;
 import com.finboostplus.projection.ExpenseProjection;
@@ -27,4 +28,12 @@ public interface ExpenseRepository extends JpaRepository<Expense,Long> {
              GROUP BY expenses.id,categories.name
     """)
    List<ExpenseProjection>  listExpensesGroupById(Long memberId, Long groupId);
+    @Query(nativeQuery = true, value = """
+         select e.id, e.title, ued.partial_value from expenses as e
+              inner join user_expense_divisions as ued on ued.expense_id = e.id
+              inner join groups as g on g.id = e.group_id
+              inner join users as u on u.id = ued.user_id
+              where g.id = :groupId and u.id = :memberId and is_paid = false;
+         """)
+   List<GroupExpenseDTO> getAllGroupExpenses(Long memberId, Long groupId);
 }

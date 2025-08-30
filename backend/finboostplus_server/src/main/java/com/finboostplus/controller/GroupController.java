@@ -126,14 +126,14 @@ public class GroupController {
         return ResponseEntity.badRequest().body("Não foi possível a criação da nova Despesa ");
     }
 
-    @GetMapping("/{groupId}/expenses")
+    /*@GetMapping("/{groupId}/expenses")
     public ResponseEntity<Object> listDetailsGroup(@PathVariable Long groupId) {
         GroupDetailsDTO dto = groupService.getExpenseGroupById(groupId);
         if (dto != null) {
             return ResponseEntity.ok().body(dto);
         }
         return ResponseEntity.badRequest().body("Não foi possivel obter os detalhes do grupo");
-    }
+    }*/
 
     @GetMapping("/{groupId}/members")
     public ResponseEntity<List<GroupMemberResponseDTO>> findAllMembersByGroupId(@PathVariable long groupId) {
