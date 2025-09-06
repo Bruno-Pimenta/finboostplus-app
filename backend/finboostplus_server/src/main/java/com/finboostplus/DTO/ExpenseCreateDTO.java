@@ -1,9 +1,10 @@
 package com.finboostplus.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Set;
 
 public record ExpenseCreateDTO(
@@ -14,8 +15,9 @@ public record ExpenseCreateDTO(
         @Size(max = 255, message = "A descrição deve ter no máximo 255 caracteres")
         String description,
 
-        @FutureOrPresent(message = "A data limite deve ser no presente ou no futuro")
-        Instant deadlineDate,
+        @NotNull(message = "A data limite é obrigatória")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        LocalDate deadlineDate,
 
         @NotEmpty(message = "A divisão da despesa deve conter pelo menos um membro")
         Set<MembersExpenseDivisionCreateDTO> expenseDivision,

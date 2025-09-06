@@ -3,6 +3,8 @@ package com.finboostplus.controller;
 
 import com.finboostplus.DTO.ExpenseCreateDTO;
 import com.finboostplus.DTO.GroupExpenseDTO;
+import com.finboostplus.enums.Status;
+import com.finboostplus.projection.GroupExpenseProjection;
 import com.finboostplus.service.ExpenseService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,17 @@ public class ExpenseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GroupExpenseDTO>> getAllGroupExpenses(@PathVariable Long groupId){
-        return new ResponseEntity<>(expenseService.getAllGroupExpenses(groupId), HttpStatus.CREATED);
+    public ResponseEntity<List<GroupExpenseProjection>> getAllGroupExpenses(
+            @PathVariable Long groupId,
+            @RequestParam(required = false) Status status,
+            @RequestParam(defaultValue = "true") boolean allMemberExpenses,
+            @RequestParam(defaultValue = "false") boolean allGroupMembersExpenses) {
+
+        List<GroupExpenseProjection> expenses = expenseService.getAllGroupExpenses(
+                groupId, status, allMemberExpenses, allGroupMembersExpenses);
+
+        return ResponseEntity.ok(expenses);
     }
+
+
 }

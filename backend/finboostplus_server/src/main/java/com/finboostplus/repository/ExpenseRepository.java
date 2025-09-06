@@ -2,9 +2,11 @@ package com.finboostplus.repository;
 
 import com.finboostplus.DTO.ExpenseDTO;
 import com.finboostplus.DTO.GroupExpenseDTO;
+import com.finboostplus.enums.Status;
 import com.finboostplus.model.Expense;
 import com.finboostplus.model.Group;
 import com.finboostplus.projection.ExpenseProjection;
+import com.finboostplus.projection.GroupExpenseProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,12 +30,99 @@ public interface ExpenseRepository extends JpaRepository<Expense,Long> {
              GROUP BY expenses.id,categories.name
     """)
    List<ExpenseProjection>  listExpensesGroupById(Long memberId, Long groupId);
-    @Query(nativeQuery = true, value = """
-         select e.id, e.title, ued.partial_value from expenses as e
-              inner join user_expense_divisions as ued on ued.expense_id = e.id
-              inner join groups as g on g.id = e.group_id
-              inner join users as u on u.id = ued.user_id
-              where g.id = :groupId and u.id = :memberId and is_paid = false;
+   @Query(value = """
+       SELECT
+           e.id AS id,
+           e.title AS title,
+           ued.partial_value AS value,
+           ued.status AS status,
+           e.deadline_date AS deadline_date
+       FROM expenses e
+       INNER JOIN user_expense_divisions ued ON ued.expense_id = e.id
+       INNER JOIN groups g ON g.id = e.group_id
+       INNER JOIN users u ON u.id = ued.user_id
+       WHERE g.id = :groupId
+         AND u.id = :memberId
+       ORDER BY
+           CASE
+               WHEN e.deadline_date < NOW() THEN 3
+               WHEN e.deadline_date >= NOW() THEN 2
+               ELSE 1
+           END,
+           e.deadline_date ASC
+       """, nativeQuery = true)
+   List<GroupExpenseProjection> getAllGroupExpenses(Long memberId, Long groupId);
+
+
+   @Query(nativeQuery = true, value = """
+           SELECT 
+               e.id AS id,
+               e.title AS title,
+               ued.partial_value AS value,
+               ued.status AS status,
+               e.deadline_date AS deadline_date
+           FROM expenses e
+           INNER JOIN user_expense_divisions ued ON ued.expense_id = e.id
+           INNER JOIN groups g ON g.id = e.group_id
+           INNER JOIN users u ON u.id = ued.user_id
+           WHERE g.id = :groupId 
+             AND u.id = :memberId 
+             AND ued.status = :status
+           ORDER BY 
+               CASE 
+                   WHEN e.deadline_date < NOW() THEN 3  
+                   WHEN e.deadline_date >= NOW() THEN 2 
+                   ELSE 1                               
+               END,
+               e.deadline_date ASC
+           """)
+   List<GroupExpenseProjection> getAllGroupExpensesFiltered(Long memberId, Long groupId, String status);
+
+
+   @Query(nativeQuery = true, value = """
+         SELECT
+            e.id AS id,
+            e.title AS title,
+            e.value AS value,
+            e.status AS status,
+            e.deadline_date AS deadline_date
+         FROM expenses e
+         INNER JOIN user_expense_divisions ued ON ued.expense_id = e.id
+         INNER JOIN groups g ON g.id = e.group_id
+         INNER JOIN users u ON u.id = ued.user_id
+         WHERE g.id = :groupId
+            GROUP BY e.id, e.title, e.value, e.status, e.deadline_date
+               ORDER BY
+               CASE
+               WHEN e.deadline_date < NOW() THEN 3
+               WHEN e.deadline_date >= NOW() THEN 2
+               ELSE 1
+               END,
+            e.deadline_date ASC;
+           """)
+   List<GroupExpenseProjection> getAllGroupExpensesOfAllMembers(Long groupId);
+
+   @Query(nativeQuery = true, value = """
+         SELECT
+            e.id AS id,
+            e.title AS title,
+            e.value AS value,
+            e.status AS status,
+            e.deadline_date AS deadline_date
+         FROM expenses e
+         INNER JOIN user_expense_divisions ued ON ued.expense_id = e.id
+         INNER JOIN groups g ON g.id = e.group_id
+         INNER JOIN users u ON u.id = ued.user_id
+         WHERE g.id = :groupId
+         AND ued.status = :status
+            GROUP BY e.id, e.title, e.value, e.status, e.deadline_date
+            ORDER BY
+               CASE
+                  WHEN e.deadline_date < NOW() THEN 3
+                  WHEN e.deadline_date >= NOW() THEN 2
+                  ELSE 1
+               END,
+            e.deadline_date ASC;
          """)
-   List<GroupExpenseDTO> getAllGroupExpenses(Long memberId, Long groupId);
+   List<GroupExpenseProjection> getAllGroupExpensesOfAllMembersFiltered(Long memberId, Long groupId, String status);
 }

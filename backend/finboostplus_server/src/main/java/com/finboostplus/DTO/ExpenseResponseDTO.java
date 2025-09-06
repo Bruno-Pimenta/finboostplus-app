@@ -2,6 +2,7 @@ package com.finboostplus.DTO;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record ExpenseResponseDTO(
@@ -13,7 +14,7 @@ public record ExpenseResponseDTO(
 
                                  BigDecimal value,
 
-                                 Instant deadlineDate,
+                                 LocalDate deadlineDate,
 
                                  Instant createAt) {
 

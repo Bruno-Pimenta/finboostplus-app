@@ -29,7 +29,7 @@ import org.springframework.http.HttpStatus;
 
 import com.finboostplus.DTO.GroupCreateDTO;
 import com.finboostplus.DTO.GroupMemberDTO;
-import com.finboostplus.DTO.GroupMemberResponseDTO;
+
 
 @RestController
 @RequestMapping("/groups")
@@ -118,8 +118,8 @@ public class GroupController {
                     expense.getTitle(),
                     expense.getDescription(),
                     expense.getValue(),
-                    expense.getCreatAt(),
-                    expense.getDeadlineDate());
+                    expense.getDeadlineDate(),
+                    expense.getCreatAt());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(expdto);
         }

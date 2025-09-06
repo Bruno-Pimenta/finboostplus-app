@@ -1,12 +1,12 @@
 package com.finboostplus.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.finboostplus.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "expenses")
@@ -29,10 +29,10 @@ public class Expense {
     private String description;
 
     @Column(name = "deadline_date")
-    private Instant deadlineDate;
+    private LocalDate deadlineDate;
 
     @Column(name = "creat_at")
-    private Instant creatAt; // Talvez mudar para instant
+    private Instant creatAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -42,6 +42,9 @@ public class Expense {
     @JoinColumn(name = "group_id")
     private Group group;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status;
 
     @Override
     public boolean equals(Object o) {
@@ -56,7 +59,7 @@ public class Expense {
         return id != null ? id.hashCode() : 0;
     }
 
-    public Expense(String title, String description, BigDecimal value, Category category, Group group, Instant deadlineDate) {
+    public Expense(String title, String description, BigDecimal value, Category category, Group group, LocalDate deadlineDate, Status status) {
         this.title = title;
         this.description = description;
         this.value = value;
@@ -64,5 +67,6 @@ public class Expense {
         this.group = group;
         this.deadlineDate = deadlineDate;
         this.creatAt = Instant.now();
+        this.status = status;
     }
 }

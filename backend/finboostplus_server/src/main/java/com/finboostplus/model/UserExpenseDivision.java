@@ -1,5 +1,6 @@
 package com.finboostplus.model;
 
+import com.finboostplus.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +31,8 @@ public class UserExpenseDivision {
     @Column(name = "partial_value")
     private BigDecimal parcialValue;
 
-    @Column(name = "is_paid")
-    private boolean isPaid;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status;
 
 }

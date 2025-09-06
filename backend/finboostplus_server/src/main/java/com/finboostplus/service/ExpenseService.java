@@ -4,15 +4,18 @@ import com.finboostplus.DTO.ExpenseCreateDTO;
 import com.finboostplus.DTO.ExpenseRequestDTO;
 import com.finboostplus.DTO.GroupExpenseDTO;
 import com.finboostplus.DTO.MembersExpenseDivisionCreateDTO;
+import com.finboostplus.enums.Status;
 import com.finboostplus.exception.*;
 import com.finboostplus.model.*;
 import com.finboostplus.projection.ExpenseProjection;
+import com.finboostplus.projection.GroupExpenseProjection;
 import com.finboostplus.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +45,8 @@ public class ExpenseService {
    @Autowired
    GroupRepository groupRepository;
 
-    List<String> authLevels = List.of("OWNER", "ADMIN");
+   private List<String> authLevels = List.of("OWNER", "ADMIN");
+
 
    public Expense addNewExpense(Long idGroup, Long idCategory, ExpenseRequestDTO expDto){
 
@@ -62,9 +66,7 @@ public class ExpenseService {
                return expenseRepository.save(expense);
            }
        }
-
-    return null;
-
+       return null;
    }
 
    public List<ExpenseProjection> listExpenseDTOGroupById(Long groupId){
@@ -116,6 +118,8 @@ public class ExpenseService {
             }
         }
 
+        Status status = expenseDTO.deadlineDate().isAfter(LocalDate.now()) ? Status.PENDING : Status.UNPAID;
+
         // 5. Criação da despesa
         Expense expense = new Expense(
                 expenseDTO.title(),
@@ -123,7 +127,8 @@ public class ExpenseService {
                 expenseDTO.expenseValue(),
                 category,
                 group,
-                expenseDTO.deadlineDate()
+                expenseDTO.deadlineDate(),
+                status
         );
 
         expense = expenseRepository.save(expense);
@@ -140,7 +145,7 @@ public class ExpenseService {
                     userMember,
                     expense,
                     member.value(),
-                    false
+                    status
             );
 
             userExpenseDivisionRepository.save(userExpenseDivision);
@@ -162,7 +167,7 @@ public class ExpenseService {
         return expenseValue.compareTo(total) == 0;
     }
 
-    public List<GroupExpenseDTO> getAllGroupExpenses (Long groupId){
+    public List<GroupExpenseProjection> getAllGroupExpenses (Long groupId, Status status, boolean allMemberExpenses, boolean allGroupMembersExpenses ){
         String userName = userService.authenticated();
         User user = userRepository.findByEmailIgnoreCase(userName)
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
@@ -170,8 +175,24 @@ public class ExpenseService {
             throw new ForbiddenResourceException("Acesso negado");
         }
 
-        return expenseRepository.getAllGroupExpenses(user.getId(), groupId);
+        if(allGroupMembersExpenses==true){
+            allMemberExpenses=false;
+        }
 
+        if(allMemberExpenses==true){
+            if(status == null){
+                return expenseRepository.getAllGroupExpenses(user.getId(), groupId);
+            }else{
+                return expenseRepository.getAllGroupExpensesFiltered(user.getId(), groupId, status.name());
+            }
+        }else if(allGroupMembersExpenses==true && groupMemberRepository.isUserOnwerOrAdmin(user.getId(), groupId,authLevels)){
+            if(status == null){
+                return expenseRepository.getAllGroupExpensesOfAllMembers(groupId);
+            }else{
+                return expenseRepository.getAllGroupExpensesOfAllMembersFiltered(user.getId(), groupId, status.name());
+            }
+        }
+        throw new ForbiddenResourceException("Acesso negado");
     }
 
 }
